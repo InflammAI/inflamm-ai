@@ -102,14 +102,14 @@ const FeaturesSection = () => {
         <div className="relative">
           <div className="flex overflow-x-auto pb-8 -mx-4 px-4 scrollbar-hide horizontal-scroll">
             <div className="flex gap-6">
-              {features.map((feature, index) => (
+              {features.map((feature, featureIndex) => (
                 <motion.div
-                  key={index}
+                  key={`feature-${feature.title.toLowerCase().replace(/\s+/g, '-')}`}
                   className={`${feature.bgColor} rounded-3xl p-8 shadow-xl relative overflow-hidden min-w-[300px] max-w-[350px] flex-shrink-0`}
                   initial={{ opacity: 0, x: 50 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  transition={{ duration: 0.5, delay: featureIndex * 0.1 }}
                   whileHover={{ scale: 1.02, y: -5 }}
                 >
                   {/* Icon/Illustration */}

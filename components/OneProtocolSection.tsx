@@ -52,14 +52,14 @@ const OneProtocolSection = () => {
 
         {/* Path Cards */}
         <div className="space-y-6">
-          {paths.map((path, index) => (
+          {paths.map((path, pathIndex) => (
             <motion.div
-              key={index}
+              key={`path-${path.title.toLowerCase().replace(/\s+/g, '-')}`}
               className={`${path.bgColor} rounded-3xl p-8 md:p-10 shadow-xl flex items-center gap-6 md:gap-8`}
-              initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
+              initial={{ opacity: 0, x: pathIndex % 2 === 0 ? -30 : 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              transition={{ duration: 0.6, delay: pathIndex * 0.1 }}
               whileHover={{ scale: 1.02, y: -3 }}
             >
               {/* Icon */}

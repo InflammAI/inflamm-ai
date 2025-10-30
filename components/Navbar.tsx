@@ -38,7 +38,7 @@ const Navbar = () => {
         </motion.div>
 
         {/* Navigation */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-8"><a href="/demo" className="ml-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">Demo</a>
           <motion.a 
             href="https://t.me/InflammAI" 
             target="_blank"
