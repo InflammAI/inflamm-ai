@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // output: 'export', // Disabled to enable API routes
+  // distDir: 'out', // Disabled to use default .next directory
+  images: {
+    unoptimized: true,
+  },
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,

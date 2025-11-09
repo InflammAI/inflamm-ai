@@ -6,7 +6,7 @@ import { Web3Provider } from '@/contexts/Web3Provider';
 import { HealthProvider } from '@/contexts/HealthContext';
 import { AIProvider } from '@/contexts/AIContext';
 import { WalletConnectButton } from '@/components/demo/WalletConnectButton';
-import { HealthDashboard } from '@/components/demo/HealthDashboard';
+import HealthDashboard from '@/components/demo/HealthDashboard';
 import { AIChat } from '@/components/demo/AIChat';
 
 export function DemoContent() {

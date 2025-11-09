@@ -14,6 +14,14 @@ const config: Config = {
         'muted-gray': '#6B6B6B', // Medium gray for secondary text
         'primary-orange': '#D84315', // Deep orange matching logo
         'accent-orange': '#FF6F00', // Bright orange
+        // Inflamm AI app colors
+        'inflamm': {
+          'orange': '#FF8A00',
+          'yellow': '#FFD400',
+          'surface': '#0F1720',
+          'bg': '#0B0F14',
+          'muted': '#98A1AD',
+        },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],

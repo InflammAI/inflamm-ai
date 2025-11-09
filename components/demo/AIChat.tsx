@@ -1,7 +1,7 @@
 'use client';
 
 import { useAI } from '@/contexts/AIContext';
-import { Box, TextField, IconButton, Paper, Typography, Avatar, List, ListItem, ListItemAvatar, ListItemText, Divider } from '@mui/material';
+import { Box, TextField, IconButton, Paper, Typography, Avatar, List, ListItem, ListItemAvatar, ListItemText, Divider, Button } from '@mui/material';
 import { Send, SmartToy, Person } from '@mui/icons-material';
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
