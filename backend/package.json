@@ -5,7 +5,8 @@
   "main": "dist/src/server.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "build": "tsc",
+    "build": "tsc && npm run copy-files",
+    "copy-files": "cp -r database dist/ && cp -r scripts dist/",
     "start": "node dist/src/server.js",
     "db:migrate": "node -r dotenv/config scripts/migrate.js"
   },
