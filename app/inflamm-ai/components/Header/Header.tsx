@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VitalPointsBadge } from './VitalPointsBadge';
+import { WalletButton } from '../Wallet/WalletButton';
 import { VyTapLeaderboard } from '../Leaderboard/VyTapLeaderboard';
 
 interface HeaderProps {
@@ -52,6 +53,8 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar, sidebarCollapse
           <span className="text-xl">🏆</span>
           <span className="hidden md:inline text-sm font-semibold">Leaderboard</span>
         </button>
+        
+        <WalletButton />
       </div>
 
       {/* Leaderboard Modal */}
