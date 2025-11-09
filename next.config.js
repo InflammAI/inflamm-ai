@@ -13,8 +13,6 @@ const nextConfig = {
     };
     return config;
   },
-  // Turbopack configuration (empty to silence warning)
-  turbopack: {},
   devIndicators: {
     buildActivityPort: 3001
   },

@@ -48,20 +48,10 @@ const SidebarWrapper = ({ collapsed }: { collapsed?: boolean }) => {
 };
 
 export const Default: Story = {
-  args: {
-    activeModule: 'vytap',
-    onNavigate: () => {},
-    collapsed: false,
-  },
   render: () => <SidebarWrapper />,
 };
 
 export const Collapsed: Story = {
-  args: {
-    activeModule: 'vytap',
-    onNavigate: () => {},
-    collapsed: true,
-  },
   render: () => <SidebarWrapper collapsed />,
 };
 
@@ -106,11 +96,6 @@ export const ActiveBlog: Story = {
 };
 
 export const MobileBottomNav: Story = {
-  args: {
-    activeModule: 'vytap',
-    onNavigate: () => {},
-    collapsed: false,
-  },
   parameters: {
     viewport: {
       defaultViewport: 'mobile1',

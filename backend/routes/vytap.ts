@@ -80,7 +80,7 @@ router.get('/leaderboard', optionalAuth, async (req, res) => {
 });
 
 // POST /api/v1/vytap/tap
-router.post('/tap', verifyWallet, async (req, res): Promise<any> => {
+router.post('/tap', verifyWallet, async (req, res) => {
   try {
     const { walletAddress } = req.user!;
     const { timestamp } = req.body;
@@ -165,7 +165,7 @@ router.post('/tap', verifyWallet, async (req, res): Promise<any> => {
       await client.query('COMMIT');
       client.release();
 
-      return res.json({
+      res.json({
         success: true,
         data: {
           pointsEarned,
@@ -181,12 +181,12 @@ router.post('/tap', verifyWallet, async (req, res): Promise<any> => {
     }
   } catch (error) {
     console.error('Tap error:', error);
-    return res.status(500).json({ success: false, error: 'Failed to process tap' });
+    res.status(500).json({ success: false, error: 'Failed to process tap' });
   }
 });
 
 // GET /api/v1/vytap/balance
-router.get('/balance', verifyWallet, async (req, res): Promise<any> => {
+router.get('/balance', verifyWallet, async (req, res) => {
   try {
     const { walletAddress } = req.user!;
 
@@ -195,7 +195,7 @@ router.get('/balance', verifyWallet, async (req, res): Promise<any> => {
       [walletAddress]
     );
 
-    return res.json({
+    res.json({
       success: true,
       data: {
         balance: result.rows[0]?.total_points || 0
@@ -203,12 +203,12 @@ router.get('/balance', verifyWallet, async (req, res): Promise<any> => {
     });
   } catch (error) {
     console.error('Balance error:', error);
-    return res.status(500).json({ success: false, error: 'Failed to fetch balance' });
+    res.status(500).json({ success: false, error: 'Failed to fetch balance' });
   }
 });
 
 // GET /api/v1/vytap/streak
-router.get('/streak', verifyWallet, async (req, res): Promise<any> => {
+router.get('/streak', verifyWallet, async (req, res) => {
   try {
     const { walletAddress } = req.user!;
 
@@ -232,7 +232,7 @@ router.get('/streak', verifyWallet, async (req, res): Promise<any> => {
       [userResult.rows[0].id]
     );
 
-    return res.json({
+    res.json({
       success: true,
       data: {
         currentStreak: streakResult.rows[0]?.current_streak || 0,
@@ -241,7 +241,7 @@ router.get('/streak', verifyWallet, async (req, res): Promise<any> => {
     });
   } catch (error) {
     console.error('Streak error:', error);
-    return res.status(500).json({ success: false, error: 'Failed to fetch streak' });
+    res.status(500).json({ success: false, error: 'Failed to fetch streak' });
   }
 });
 

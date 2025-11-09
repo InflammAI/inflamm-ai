@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { API_ENDPOINTS } from '../../config/api';
 
 interface VitalPointsBadgeProps {
   className?: string;
@@ -31,7 +30,7 @@ export const VitalPointsBadge: React.FC<VitalPointsBadgeProps> = ({ className = 
     setIsLoading(true);
     try {
       const walletAddress = publicKey.toString();
-      const response = await fetch(`${API_ENDPOINTS.VYTAP.LEADERBOARD}?walletAddress=${walletAddress}`);
+      const response = await fetch(`/api/vytap/leaderboard?walletAddress=${walletAddress}`);
       const data = await response.json();
       
       if (data.success) {

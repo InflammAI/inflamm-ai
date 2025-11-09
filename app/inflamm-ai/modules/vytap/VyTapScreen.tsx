@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWallet } from '@solana/wallet-adapter-react';
 import bs58 from 'bs58';
-import { API_ENDPOINTS } from '../../config/api';
 
 export const VyTapScreen: React.FC = () => {
   const { publicKey, connected, signMessage } = useWallet();
@@ -213,7 +212,7 @@ export const VyTapScreen: React.FC = () => {
       }
       
       // Call backend API with session signature + current tap timestamp
-      const response = await fetch(API_ENDPOINTS.VYTAP.TAP, {
+      const response = await fetch('/api/vytap/tap', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
