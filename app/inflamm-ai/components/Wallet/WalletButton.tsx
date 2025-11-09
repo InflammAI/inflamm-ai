@@ -1,121 +1,108 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { useWalletModal } from '@solana/wallet-adapter-react-ui';
-import { motion } from 'framer-motion';
+import { createQR, encodeURL, TransactionRequestURLFields } from '@solana/pay';
+import { PublicKey } from '@solana/web3.js';
+import { Button } from '../ui/button';
+import { useToast } from '../ui/use-toast';
+import { vytapApi } from '../../config/api';
 
-export const WalletButton: React.FC = () => {
-  const { publicKey, connected, disconnect } = useWallet();
-  const { setVisible } = useWalletModal();
-  const [mounted, setMounted] = useState(false);
-  const [showMenu, setShowMenu] = useState(false);
+export function WalletButton() {
+  const { publicKey, connect, disconnect, connected } = useWallet();
+  const [isTapping, setIsTapping] = useState(false);
+  const [isClaiming, setIsClaiming] = useState(false);
+  const { toast } = useToast();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const handleTap = async () => {
+    if (!publicKey) {
+      toast({
+        title: 'Wallet not connected',
+        description: 'Please connect your wallet first',
+        variant: 'destructive',
+      });
+      return;
+    }
 
-  const formatAddress = (address: string) => {
-    return `${address.slice(0, 4)}...${address.slice(-4)}`;
-  };
-
-  const handleClick = () => {
-    if (connected) {
-      setShowMenu(!showMenu);
-    } else {
-      setVisible(true);
+    try {
+      setIsTapping(true);
+      const result = await vytapApi.tap(publicKey.toString(), 1);
+      
+      toast({
+        title: 'Tap successful!',
+        description: `You've earned ${result.points} points!`,
+      });
+      
+      // Refresh any necessary data
+      // await fetchUserData();
+    } catch (error) {
+      console.error('Tap failed:', error);
+      toast({
+        title: 'Tap failed',
+        description: error.message || 'Failed to process tap',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsTapping(false);
     }
   };
 
-  const handleDisconnect = () => {
-    disconnect();
-    setShowMenu(false);
+  const handleClaim = async () => {
+    if (!publicKey) {
+      toast({
+        title: 'Wallet not connected',
+        description: 'Please connect your wallet first',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    try {
+      setIsClaiming(true);
+      // Your existing claim logic here
+      // ...
+      
+    } catch (error) {
+      console.error('Claim failed:', error);
+      toast({
+        title: 'Claim failed',
+        description: error.message || 'Failed to process claim',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsClaiming(false);
+    }
   };
 
-  // Avoid hydration mismatch by not rendering until mounted
-  if (!mounted) {
-    return (
-      <div className="w-32 h-10 rounded-lg bg-gradient-to-r from-[var(--accent-orange)] to-[var(--accent-yellow)] animate-pulse" />
-    );
-  }
-
-  if (!connected) {
-    return (
-      <button
-        onClick={handleClick}
-        className="px-4 py-2 rounded-lg text-white font-semibold text-sm transition-all hover:scale-105"
-        style={{
-          background: 'linear-gradient(to right, var(--accent-orange), var(--accent-yellow))',
-        }}
-      >
-        Connect Wallet
-      </button>
-    );
-  }
-
   return (
-    <div className="relative">
-      <motion.button
-        onClick={handleClick}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.98 }}
-        className="flex items-center gap-2 px-4 py-2 rounded-lg text-white font-semibold hover:scale-105 transition-transform"
-        style={{
-          background: 'linear-gradient(to bottom right, var(--accent-orange), var(--accent-yellow))',
-        }}
+    <div className="flex flex-col space-y-4">
+      <Button
+        onClick={connected ? disconnect : () => connect().catch(console.error)}
+        className="w-full"
+        variant={connected ? 'destructive' : 'default'}
       >
-        {/* User Icon Only - No Wallet Icon */}
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <circle
-            cx="12"
-            cy="7"
-            r="4"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-        <span className="text-sm hidden md:inline">
-          {publicKey ? formatAddress(publicKey.toString()) : ''}
-        </span>
-      </motion.button>
+        {connected ? 'Disconnect Wallet' : 'Connect Wallet'}
+      </Button>
 
-      {/* Dropdown Menu */}
-      {showMenu && (
-        <>
-          <div
-            className="fixed inset-0 z-40"
-            onClick={() => setShowMenu(false)}
-          />
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="absolute right-0 mt-2 w-48 bg-[var(--surface)] border border-gray-700 rounded-lg shadow-xl z-50 overflow-hidden"
+      {connected && (
+        <div className="space-y-2">
+          <Button
+            onClick={handleTap}
+            disabled={isTapping}
+            className="w-full bg-green-600 hover:bg-green-700"
           >
-            <button
-              onClick={handleDisconnect}
-              className="w-full px-4 py-3 text-left text-sm text-white hover:bg-gray-800 transition-colors"
-            >
-              Disconnect
-            </button>
-          </motion.div>
-        </>
+            {isTapping ? 'Tapping...' : 'Tap to Earn'}
+          </Button>
+
+          <Button
+            onClick={handleClaim}
+            disabled={isClaiming}
+            className="w-full bg-blue-600 hover:bg-blue-700"
+          >
+            {isClaiming ? 'Claiming...' : 'Claim Rewards'}
+          </Button>
+        </div>
       )}
     </div>
   );
-};
+}
