@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { API_ENDPOINTS } from '@/app/inflamm-ai/config/api';
+import { API_ENDPOINTS } from '../../config/api';
 
 interface VitalPointsBadgeProps {
   className?: string;

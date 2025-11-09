@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { motion } from 'framer-motion';
-import { API_ENDPOINTS } from '@/app/inflamm-ai/config/api';
+import { API_ENDPOINTS } from '../../config/api';
 
 interface LeaderboardEntry {
   userId: string;

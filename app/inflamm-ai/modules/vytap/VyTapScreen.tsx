@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWallet } from '@solana/wallet-adapter-react';
 import bs58 from 'bs58';
-import { API_ENDPOINTS } from '@/app/inflamm-ai/config/api';
+import { API_ENDPOINTS } from '../../config/api';
 
 export const VyTapScreen: React.FC = () => {
   const { publicKey, connected, signMessage } = useWallet();
