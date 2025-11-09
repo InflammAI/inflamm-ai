@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWallet } from '@solana/wallet-adapter-react';
 import bs58 from 'bs58';
+import { API_ENDPOINTS } from '@/app/inflamm-ai/config/api';
 
 export const VyTapScreen: React.FC = () => {
   const { publicKey, connected, signMessage } = useWallet();
@@ -212,7 +213,7 @@ export const VyTapScreen: React.FC = () => {
       }
       
       // Call backend API with session signature + current tap timestamp
-      const response = await fetch('http://localhost:3001/api/v1/vytap/tap', {
+      const response = await fetch(API_ENDPOINTS.VYTAP.TAP, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

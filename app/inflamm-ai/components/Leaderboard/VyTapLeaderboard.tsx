@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { motion } from 'framer-motion';
+import { API_ENDPOINTS } from '@/app/inflamm-ai/config/api';
 
 interface LeaderboardEntry {
   userId: string;
@@ -35,8 +36,8 @@ export const VyTapLeaderboard: React.FC = () => {
     try {
       const walletAddress = connected && publicKey ? publicKey.toString() : '';
       const url = walletAddress 
-        ? `http://localhost:3001/api/v1/vytap/leaderboard?walletAddress=${walletAddress}&limit=10`
-        : 'http://localhost:3001/api/v1/vytap/leaderboard?limit=10';
+        ? `${API_ENDPOINTS.VYTAP.LEADERBOARD}?walletAddress=${walletAddress}&limit=10`
+        : `${API_ENDPOINTS.VYTAP.LEADERBOARD}?limit=10`;
       
       const response = await fetch(url);
       const data = await response.json();
