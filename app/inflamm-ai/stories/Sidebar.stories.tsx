@@ -106,6 +106,11 @@ export const ActiveBlog: Story = {
 };
 
 export const MobileBottomNav: Story = {
+  args: {
+    activeModule: 'vytap',
+    onNavigate: () => {},
+    collapsed: false,
+  },
   parameters: {
     viewport: {
       defaultViewport: 'mobile1',
