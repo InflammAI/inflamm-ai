@@ -13,7 +13,7 @@ declare global {
   }
 }
 
-export async function verifyWallet(req: Request, res: Response, next: NextFunction) {
+export async function verifyWallet(req: Request, res: Response, next: NextFunction): Promise<any> {
   try {
     // Support both session-based and traditional signature formats
     const { walletAddress, sessionSignature, sessionMessage, signature, message } = req.body;
@@ -104,10 +104,10 @@ export async function verifyWallet(req: Request, res: Response, next: NextFuncti
 
     // Attach user to request
     req.user = { walletAddress };
-    next();
+    return next();
   } catch (error) {
     console.error('Wallet verification error:', error);
-    res.status(500).json({ success: false, error: 'Authentication failed' });
+    return res.status(500).json({ success: false, error: 'Authentication failed' });
   }
 }
 
