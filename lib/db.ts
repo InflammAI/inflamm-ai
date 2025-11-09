@@ -5,10 +5,14 @@ let pool: Pool | null = null;
 
 function getPool() {
   if (!pool) {
+    if (!process.env.DATABASE_URL) {
+      throw new Error('DATABASE_URL environment variable is not set');
+    }
+
     pool = new Pool({
       connectionString: process.env.DATABASE_URL,
-      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-      max: 10, // Reduced for serverless
+      ssl: { rejectUnauthorized: false },
+      max: 10,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 5000,
     });
