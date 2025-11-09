@@ -4,11 +4,51 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import vytapRoutes from '../routes/vytap';
+import { Pool } from 'pg';
+import * as fs from 'fs';
+import * as path from 'path';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Auto-run database migrations on startup
+async function runMigrations() {
+  if (!process.env.DATABASE_URL) {
+    console.warn('⚠️  DATABASE_URL not set, skipping migrations');
+    return;
+  }
+
+  const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+  });
+
+  try {
+    console.log('🔄 Running database migrations...');
+    
+    const schemaPath = path.join(__dirname, '../database/schema.sql');
+    const schema = fs.readFileSync(schemaPath, 'utf8');
+    
+    await pool.query(schema);
+    
+    console.log('✅ Database migrations completed!');
+    
+    const result = await pool.query(`
+      SELECT table_name 
+      FROM information_schema.tables 
+      WHERE table_schema = 'public'
+      ORDER BY table_name;
+    `);
+    
+    console.log('📊 Tables:', result.rows.map(r => r.table_name).join(', '));
+  } catch (error) {
+    console.error('❌ Migration error:', error);
+    // Don't exit - let the app start anyway
+  } finally {
+    await pool.end();
+  }
+}
 
 // Middleware
 app.use(helmet());
@@ -60,10 +100,23 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🔗 Frontend URL: ${process.env.FRONTEND_URL || 'http://localhost:3000'}`);
+// Start server with migrations
+async function startServer() {
+  // Run migrations first
+  await runMigrations();
+  
+  // Then start the server
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`🔗 Frontend URL: ${process.env.FRONTEND_URL || 'http://localhost:3000'}`);
+  });
+}
+
+// Start the server
+startServer().catch(error => {
+  console.error('Failed to start server:', error);
+  process.exit(1);
 });
 
 export default app;
