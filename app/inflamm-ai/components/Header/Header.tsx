@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VitalPointsBadge } from './VitalPointsBadge';
 import { WalletButton } from '../Wallet/WalletButton';
@@ -13,6 +13,11 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ onToggleSidebar, sidebarCollapsed }) => {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <header className="h-16 bg-[var(--surface)] border-b border-gray-800 px-6 flex items-center justify-between sticky top-0 z-40">
@@ -54,7 +59,7 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar, sidebarCollapse
           <span className="hidden md:inline text-sm font-semibold">Leaderboard</span>
         </button>
         
-        <WalletButton />
+        {mounted && <WalletButton />}
       </div>
 
       {/* Leaderboard Modal */}
