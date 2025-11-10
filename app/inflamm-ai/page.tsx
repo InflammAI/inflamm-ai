@@ -10,6 +10,7 @@ import { ChatScreen } from './modules/chat/ChatScreen';
 import { SciCastScreen } from './modules/scicast/SciCastScreen';
 import { BlogScreen } from './modules/blog/BlogScreen';
 import { SolanaWalletProvider } from './providers/SolanaWalletProvider';
+import { NeuralBackground } from './components/Background/NeuralBackground';
 import './styles/tokens.css';
 
 export default function InflammAIPage() {
@@ -70,7 +71,8 @@ export default function InflammAIPage() {
 
   return (
     <SolanaWalletProvider>
-      <div className="flex h-screen bg-[var(--bg)] overflow-hidden">
+      <NeuralBackground />
+      <div className="flex h-screen bg-[var(--bg)] overflow-hidden relative">
         {/* Desktop Sidebar */}
         {!isMobile && (
           <Sidebar
@@ -101,13 +103,13 @@ export default function InflammAIPage() {
         )}
 
         {/* Main content */}
-        <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="flex-1 flex flex-col overflow-hidden relative z-10">
           <Header
             onToggleSidebar={() => setShowMobileSidebar(!showMobileSidebar)}
             sidebarCollapsed={sidebarCollapsed}
           />
           
-          <main className="flex-1 overflow-y-auto">
+          <main className="flex-1 overflow-y-auto relative z-10">
             {renderModule()}
           </main>
 
