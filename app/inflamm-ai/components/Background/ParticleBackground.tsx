@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface Particle {
   x: number;
@@ -12,8 +12,14 @@ interface Particle {
 
 export function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
     const canvas = canvasRef.current;
     if (!canvas) {
       console.log('❌ Canvas ref not found');
@@ -107,7 +113,11 @@ export function ParticleBackground() {
       window.removeEventListener('resize', resizeCanvas);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [mounted]);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <canvas
