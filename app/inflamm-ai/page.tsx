@@ -72,7 +72,7 @@ export default function InflammAIPage() {
   return (
     <SolanaWalletProvider>
       <ParticleBackground />
-      <div className="flex h-screen bg-[var(--bg)] overflow-hidden relative">
+      <div className="flex h-screen bg-[var(--bg)] overflow-hidden relative" style={{ zIndex: 10 }}>
         {/* Desktop Sidebar */}
         {!isMobile && (
           <Sidebar

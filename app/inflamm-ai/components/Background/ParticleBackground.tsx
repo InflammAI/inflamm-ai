@@ -15,10 +15,18 @@ export function ParticleBackground() {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas) {
+      console.log('❌ Canvas ref not found');
+      return;
+    }
 
     const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    if (!ctx) {
+      console.log('❌ Canvas context not available');
+      return;
+    }
+    
+    console.log('✅ ParticleBackground mounted, canvas size:', canvas.width, 'x', canvas.height);
 
     // Set canvas size
     const resizeCanvas = () => {
@@ -29,19 +37,21 @@ export function ParticleBackground() {
     window.addEventListener('resize', resizeCanvas);
 
     // Create particles
-    const particleCount = 100;
+    const particleCount = 80;
     const particles: Particle[] = [];
-    const maxDistance = 150;
+    const maxDistance = 200;
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        radius: Math.random() * 2 + 1,
+        vx: (Math.random() - 0.5) * 1,
+        vy: (Math.random() - 0.5) * 1,
+        radius: Math.random() * 3 + 2,
       });
     }
+    
+    console.log('✅ Created', particleCount, 'particles');
 
     // Animation loop
     let animationFrameId: number;
@@ -60,11 +70,14 @@ export function ParticleBackground() {
         if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1;
         if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1;
 
-        // Draw particle
+        // Draw particle with glow
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = '#ff6b35';
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
         ctx.fillStyle = '#ff6b35';
         ctx.fill();
+        ctx.shadowBlur = 0;
 
         // Draw connections
         particles.slice(i + 1).forEach((otherParticle) => {
@@ -76,9 +89,9 @@ export function ParticleBackground() {
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);
             ctx.lineTo(otherParticle.x, otherParticle.y);
-            const opacity = (1 - distance / maxDistance) * 0.3;
+            const opacity = (1 - distance / maxDistance) * 0.5;
             ctx.strokeStyle = `rgba(255, 107, 53, ${opacity})`;
-            ctx.lineWidth = 0.5;
+            ctx.lineWidth = 1;
             ctx.stroke();
           }
         });
@@ -99,15 +112,15 @@ export function ParticleBackground() {
   return (
     <canvas
       ref={canvasRef}
+      className="particle-background"
       style={{
         position: 'fixed',
         top: 0,
         left: 0,
-        width: '100%',
-        height: '100%',
-        zIndex: 0,
+        width: '100vw',
+        height: '100vh',
+        zIndex: 1,
         pointerEvents: 'none',
-        backgroundColor: 'transparent',
       }}
     />
   );
