@@ -10,7 +10,7 @@ import { ChatScreen } from './modules/chat/ChatScreen';
 import { SciCastScreen } from './modules/scicast/SciCastScreen';
 import { BlogScreen } from './modules/blog/BlogScreen';
 import { SolanaWalletProvider } from './providers/SolanaWalletProvider';
-import { NeuralBackground } from './components/Background/NeuralBackground';
+import { ParticleBackground } from './components/Background/ParticleBackground';
 import './styles/tokens.css';
 
 export default function InflammAIPage() {
@@ -71,7 +71,7 @@ export default function InflammAIPage() {
 
   return (
     <SolanaWalletProvider>
-      <NeuralBackground />
+      <ParticleBackground />
       <div className="flex h-screen bg-[var(--bg)] overflow-hidden relative">
         {/* Desktop Sidebar */}
         {!isMobile && (
